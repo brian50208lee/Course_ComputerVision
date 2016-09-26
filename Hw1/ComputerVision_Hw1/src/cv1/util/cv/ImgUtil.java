@@ -63,9 +63,13 @@ public class ImgUtil {
 		 * up side down
 		 * right side left
 		 */
-		BufferedImage result = bi;
-		result=imgUpSideDown(result);
-		result=imgRightSideLeft(result);
+		BufferedImage result = new BufferedImage(bi.getHeight(), bi.getWidth(), bi.getType());
+		for (int i = 0; i < bi.getHeight(); i++) {
+			for (int j = 0; j < bi.getWidth() ; j++) {
+				int RGB_head=bi.getRGB(j, i);
+				result.setRGB(i	, j	, RGB_head);
+			}
+		}
 		return result;
 	}
 	

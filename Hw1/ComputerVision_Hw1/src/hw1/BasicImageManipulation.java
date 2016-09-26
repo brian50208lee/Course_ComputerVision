@@ -10,9 +10,7 @@ public class BasicImageManipulation {
 	public static final String inputFileName="lena.bmp";
 	public static final String outputFolder="output/";
 	
-	
 	public static void main(String[] args) {
-		
 		
 		//read image
 		System.out.println("read img ...");
@@ -36,5 +34,4 @@ public class BasicImageManipulation {
 		System.out.println("done");
 		
 	}
-
 }
