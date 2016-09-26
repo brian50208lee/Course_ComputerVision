@@ -60,8 +60,7 @@ public class ImgUtil {
 	
 	public static BufferedImage imgDiagonallyMirror(BufferedImage bi){
 		/*
-		 * up side down
-		 * right side left
+		 * switch row and col 
 		 */
 		BufferedImage result = new BufferedImage(bi.getHeight(), bi.getWidth(), bi.getType());
 		for (int i = 0; i < bi.getHeight(); i++) {
