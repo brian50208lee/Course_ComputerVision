@@ -38,7 +38,6 @@ public class ImgUtil {
 				result.setRGB(i, j					, RGB_tail);
 			}
 		}
-		
 		return result;
 	}
 	
@@ -69,4 +68,5 @@ public class ImgUtil {
 		result=imgRightSideLeft(result);
 		return result;
 	}
+	
 }
