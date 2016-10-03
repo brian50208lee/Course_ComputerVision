@@ -2,8 +2,6 @@ package cv1.util.cv;
 
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
-import java.awt.image.Raster;
-import java.nio.Buffer;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -85,14 +83,16 @@ public class ImgUtil {
 		BufferedImage source= toGrayImage(bi);
 		
 		BufferedImage result = new BufferedImage(source.getHeight(), source.getWidth(), source.getType());
-		for (int i = 0; i < source.getHeight(); i++) {
-			for (int j = 0; j < source.getWidth() ; j++) {
-				int rgb=source.getRGB(i, j);
+		for (int y = 0; y < source.getHeight(); y++) {
+			for (int x = 0; x < source.getWidth() ; x++) {
+				int rgb=source.getRGB(x, y);
 				int r= rgb&0xff;
 				//System.out.printf("%x ",rgb);
 				int gray=r;
 				int newBinarizeValue = gray>=threshold?0xffffffff:0xff000000;
-				result.setRGB(i	, j	, newBinarizeValue);
+				result.setRGB(x	, y	, newBinarizeValue);
+				
+				
 			}
 		}
 		return result;
@@ -108,9 +108,9 @@ public class ImgUtil {
 
 			
 		int result[] = new int[256];
-		for (int i = 0; i < source.getHeight(); i++) {
-			for (int j = 0; j < source.getWidth() ; j++) {
-				int gray=source.getRGB(i, j)&0xff;
+		for (int y = 0; y < source.getHeight(); y++) {
+			for (int x = 0; x < source.getWidth() ; x++) {
+				int gray=source.getRGB(x, y)&0xff;
 				result[gray]++;
 			}
 		}
@@ -152,20 +152,33 @@ public class ImgUtil {
 	
 	
 	
-	public static int[][] getBoundingBox(BufferedImage bi , int boxThreshold){
+	public static BufferedImage drawBoundingBox(BufferedImage bi , int boxThreshold){
 		
 		BufferedImage source = toGrayImage(bi);
 		int binaryMatix[][]= new int[bi.getHeight()][bi.getWidth()];
-		for (int i = 0; i < source.getHeight(); i++) {
-			for (int j = 0; j < source.getWidth() ; j++) {
-				int gray=source.getRGB(i, j)&0xff;
-				binaryMatix[i][j]=gray>128 ? 1:0;
+		for (int y = 0; y < source.getHeight(); y++) {
+			for (int x = 0; x < source.getWidth() ; x++) {
+				int gray=source.getRGB(x, y)&0xff;
+				binaryMatix[y][x]=gray<128 ? 1:0;
 			}
 		}
 		
-		ClassicalAlgorithm boundingBox = new ClassicalAlgorithm(binaryMatix, boxThreshold,ClassicalAlgorithm.COMPONENT_8);
+		ClassicalAlgorithm classAlg = new ClassicalAlgorithm(binaryMatix, boxThreshold,ClassicalAlgorithm.COMPONENT_4);
+		BufferedImage result = classAlg.getComponentImg();
 		
-		return binaryMatix;
+		for (int point[] :classAlg.getBoundingBox()) {
+			drawRectangle(result, point);
+		}
+		
+		
+		return result;
+	}
+	public static void drawRectangle(BufferedImage bi,int point[]){
+		//System.out.println(point[0]+","+point[1]+","+point[2]+","+point[3]);
+		for (int i = point[0]; i < point[2]; i++)bi.setRGB(i, point[1], 0xff0000ff);
+		for (int i = point[0]; i < point[2]; i++)bi.setRGB(i, point[3], 0xff0000ff);
+		for (int i = point[1]; i < point[3]; i++)bi.setRGB(point[0], i , 0xff0000ff);
+		for (int i = point[1]; i < point[3]; i++)bi.setRGB(point[2], i , 0xff0000ff);
 	}
 	
 	
@@ -179,5 +192,18 @@ public class ImgUtil {
 		}else{
 			return  bi;
 		}
+	}
+	
+	public static void show2DMatrix(int matrix[][],String title){
+		BufferedImage bi = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_ARGB);
+	
+		for (int y = 0; y < matrix.length; y++) {
+			for (int x = 0; x < matrix[0].length; x++) {
+				if (matrix[y][x]!=0) {
+					bi.setRGB(x, y, 0xff000000);
+				}
+			}
+		}
+		showImg(bi, title);
 	}
 }

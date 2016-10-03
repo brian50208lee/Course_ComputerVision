@@ -1,8 +1,11 @@
 package cv1.util.common;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+
 import javax.imageio.ImageIO;
 
 public class FileUtil {	
@@ -39,6 +42,23 @@ public class FileUtil {
 		 */
 		try {
 			ImageIO.write(img, formatName, new File(path));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void write2DMatrix(int matrix[][],String path){
+		try {
+			BufferedWriter bw = new BufferedWriter(new FileWriter(new File(path)));
+			for (int i = 0; i < matrix.length; i++) {
+				for (int j = 0; j < matrix[0].length; j++) {
+					bw.write(String.format("%4d ", matrix[i][j]));
+				}
+				bw.write("\n");
+			}
+			
+			
+			bw.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

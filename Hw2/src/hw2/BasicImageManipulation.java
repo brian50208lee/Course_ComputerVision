@@ -16,22 +16,18 @@ public class BasicImageManipulation {
 		System.out.println("read img ...");
 		BufferedImage lena = FileUtil.readImg(inputFolder+inputFileName);
 		
-		
 		//image binarize with threashold 128
 		BufferedImage bin_lena = ImgUtil.imgBinarize(lena, 128);
-		//ImgUtil.showImg(bin_lena, "binarize");
 		FileUtil.writeImg(bin_lena, outputFolder+"lena_binarize.png");
 		
 		//histogram
 		int histArray[]=ImgUtil.getImgHistogramMatrix(lena);
 		BufferedImage hist = ImgUtil.getHistogramImg(histArray);
-		ImgUtil.showImg(hist, "hist");
+		FileUtil.writeImg(hist, outputFolder+"histogram.png");
 		
 		//connected componedt
-		ImgUtil.getBoundingBox(bin_lena, 500);
-		
-		
-		
+		BufferedImage bound = ImgUtil.drawBoundingBox(bin_lena, 500);
+		FileUtil.writeImg(bound, outputFolder+"boudingBox.png");
 		
 		System.out.println("done");
 	}

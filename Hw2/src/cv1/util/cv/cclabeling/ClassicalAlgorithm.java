@@ -1,7 +1,11 @@
 package cv1.util.cv.cclabeling;
-enum pt{
-	
-}
+
+import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+
 public class ClassicalAlgorithm {
 	public static final int COMPONENT_4=0;
 	public static final int COMPONENT_8=1;
@@ -10,32 +14,167 @@ public class ClassicalAlgorithm {
 	private int boxThreshold;
 	private int componentType;
 	
-	private int labelNum=1;
-	private boolean boundMask[][];
+	
+	private int labelNum;
+	private ArrayList<Integer> parent;
+	private ArrayList<Integer> setCount;
+	private BufferedImage biComponent;
+	
+	private ArrayList<int[]> boundingBox;
 	public ClassicalAlgorithm(int binaryImgMatrix[][] , int boxThreshold , int componentType){
 		this.componentType=componentType;
 		this.boxThreshold=boxThreshold;
 		this.binaryImgMatix = binaryImgMatrix;
 		this.labelMatrix=new int[binaryImgMatrix.length][binaryImgMatrix[0].length];
+		
+		this.labelNum=0;
+		this.parent=new ArrayList<Integer>();
+		this.setCount=new ArrayList<Integer>();
+		parent.add(0);
+		setCount.add(0);
+		
 		findConnectedComponet();
+		relabeling();
+		createComponent();
+		findBoundingBox();
+		//ImgUtil.show2DMatrix(labelMatrix, "relabel");
+	}
+	public BufferedImage getComponentImg(){
+		return biComponent;
+	}
+	public ArrayList<int[]> getBoundingBox(){
+		return boundingBox;
+	}
+	private void createComponent(){
+		biComponent = new BufferedImage(labelMatrix.length, labelMatrix[0].length, BufferedImage.TYPE_INT_ARGB);
+		
+		for (int y = 0; y < labelMatrix.length; y++) {
+			for (int x = 0; x < labelMatrix[0].length; x++) {
+				if (labelMatrix[y][x]!=0) {
+					biComponent.setRGB(x, y, 0xff000000);
+				}
+			}
+		}
 	}
 	
+	private void findBoundingBox(){
+		boundingBox=new ArrayList<int[]>();
+		HashMap<Integer, int[]> setRect = new HashMap<Integer, int[]>();
+		for (int y = 0; y < labelMatrix.length; y++) {
+			for (int x = 0; x < labelMatrix[0].length; x++) {
+				if (labelMatrix[y][x]!=0 ) {
+					if (!setRect.containsKey(labelMatrix[y][x])) {
+						setRect.put(labelMatrix[y][x], new int[]{x,y,x,y});
+					}else {
+						int temp[] = setRect.get(labelMatrix[y][x]);
+						temp[0]=Math.min(temp[0], x);
+						temp[1]=Math.min(temp[1], y);
+						temp[2]=Math.max(temp[2], x);
+						temp[3]=Math.max(temp[3], y);
+						setRect.put(labelMatrix[y][x], temp);
+					}
+				}
+			}
+		}
+		for (int i :setRect.keySet()) {
+			boundingBox.add(setRect.get(i));
+		}
+		
+	}
+	
+	private void union(int x,int y){
+		int rootX=find(x);
+		int rootY=find(y);
+		if (rootX < rootY) {
+			parent.set(rootY,rootX);
+			setCount.set(rootX, setCount.get(rootX)+setCount.get(rootY));
+		}else if (rootX > rootY) {
+			parent.set(rootX,rootY);
+			setCount.set(rootY, setCount.get(rootX)+setCount.get(rootY));
+		}
+	}
+	private int find(int x){
+		if (parent.get(x)!=x) {
+			int newParent=find(parent.get(x));
+			parent.set(x, newParent);
+			return newParent;
+		}else {
+			return x;
+		}
+	}
+	
+	private void relabeling() {
+		for (int y = 0; y < binaryImgMatix.length; y++) {
+			for (int x = 0; x < binaryImgMatix[0].length; x++) {
+				labelMatrix[y][x]=find(labelMatrix[y][x]);
+				if (setCount.get(labelMatrix[y][x]) < boxThreshold) {
+					labelMatrix[y][x]=0;
+				}
+			}
+		}
+	}
+
 	private void findConnectedComponet(){
-		for (int i = 0; i < binaryImgMatix.length; i++) {
-			for (int j = 0; j < binaryImgMatix[0].length; j++) {
-				System.out.print(binaryImgMatix[i][j] +" ");
+		for (int y = 0; y < binaryImgMatix.length; y++) {
+			for (int x = 0; x < binaryImgMatix[0].length; x++) {
+				if (binaryImgMatix[y][x]==1) {
+					checkNeighbor(x,y);
+				}
 			}
-			System.out.println();
 		}
+	}
+
+	
+	private void checkNeighbor(int x , int y){
+		/*
+		 * check "up" and "left" neighborhood
+		 * and return min label in label[0]
+		 */
 		
-		for (int i = 0; i < binaryImgMatix.length; i++) {
-			for (int j = 0; j < binaryImgMatix.length; j++) {
-				
+		ArrayList<Point> neighborNonZeroPoint=getNeighborNonZeroPoint(x, y);
+		if (neighborNonZeroPoint.size()==0) {
+			/*new label*/
+			labelMatrix[y][x]=++labelNum;
+			parent.add(labelNum);
+			setCount.add(1);
+		}else {
+			/*get min label number*/
+			int minLabel=Integer.MAX_VALUE;
+			for (Point p : neighborNonZeroPoint) {
+				minLabel=Math.min(minLabel, labelMatrix[p.y][p.x]);
+			}
+			labelMatrix[y][x]=minLabel;
+			setCount.set(find(minLabel), setCount.get(find(minLabel))+1);
+			
+			/*union set*/
+			for (Point p : neighborNonZeroPoint) {
+				if (minLabel < labelMatrix[p.y][p.x]) {
+					union(minLabel , labelMatrix[p.y][p.x]);
+				}
 			}
 		}
+	
+		
+		
 		
 	}
-	
+	private ArrayList<Point> getNeighborNonZeroPoint(int x,int y){
+		ArrayList<Point> neighborNonZeroPoint = new ArrayList<Point>();
+		if (componentType == this.COMPONENT_4) {
+			if (y-1>=0 && binaryImgMatix[y-1][x]==1)neighborNonZeroPoint.add(new Point(x,y-1));
+			if (x-1>=0 && binaryImgMatix[y][x-1]==1)neighborNonZeroPoint.add(new Point(x-1,y));
+		}else if (componentType == this.COMPONENT_8) {
+			if (y-1>=0 && x-1>=0 && binaryImgMatix[y-1][x-1]==1)	
+				neighborNonZeroPoint.add(new Point(x-1,y-1));
+			if (y-1>=0 && binaryImgMatix[y-1][x]==1)			
+				neighborNonZeroPoint.add(new Point(x,y-1));
+			if (y-1>=0 && x+1<binaryImgMatix[0].length && binaryImgMatix[y-1][x+1]==1)
+				neighborNonZeroPoint.add(new Point(x+1,y-1));
+			if (x-1>=0 && binaryImgMatix[y][x-1]==1)			
+				neighborNonZeroPoint.add(new Point(x-1,y));
+		}
+		return neighborNonZeroPoint;
+	}
 	
 
 
