@@ -172,10 +172,10 @@ public class ImgUtil {
 		for (int i = point[1]; i < point[3]; i++)bi.setRGB(point[2], i , 0xffff0000);
 		
 		//draw cent
-		for (int i = (point[0]+point[2])/2-5; i < (point[0]+point[2])/2+6; i++) 
-			bi.setRGB(i, (point[1]+point[3])/2, 0xffff0000);
-		for (int i = (point[1]+point[3])/2-5; i < (point[1]+point[3])/2+6; i++) 
-				bi.setRGB((point[0]+point[2])/2, i, 0xffff0000);
+		for (int i = point[4]-5; i < point[4]+6; i++) 
+			bi.setRGB(i, point[5], 0xffff0000);
+		for (int i = point[5]-5; i < point[5]+6; i++) 
+				bi.setRGB(point[4], i, 0xffff0000);
 	}
 	
 	

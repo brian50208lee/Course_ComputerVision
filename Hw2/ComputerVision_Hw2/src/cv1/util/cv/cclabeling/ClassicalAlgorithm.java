@@ -62,19 +62,25 @@ public class ClassicalAlgorithm {
 			for (int x = 0; x < labelMatrix[0].length; x++) {
 				if (labelMatrix[y][x]!=0 ) {
 					if (!setRect.containsKey(labelMatrix[y][x])) {
-						setRect.put(labelMatrix[y][x], new int[]{x,y,x,y});
+						setRect.put(labelMatrix[y][x], new int[]{x,y,x,y,x,y,1});
 					}else {
 						int temp[] = setRect.get(labelMatrix[y][x]);
 						temp[0]=Math.min(temp[0], x);
 						temp[1]=Math.min(temp[1], y);
 						temp[2]=Math.max(temp[2], x);
 						temp[3]=Math.max(temp[3], y);
+						temp[4]+=x;
+						temp[5]+=y;
+						temp[6]++;
 						setRect.put(labelMatrix[y][x], temp);
 					}
 				}
 			}
 		}
 		for (int i :setRect.keySet()) {
+			int tempBox[] = setRect.get(i);
+			tempBox[4]/=tempBox[6];
+			tempBox[5]/=tempBox[6];
 			boundingBox.add(setRect.get(i));
 		}
 		
