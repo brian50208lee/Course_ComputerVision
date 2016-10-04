@@ -65,13 +65,13 @@ public class ClassicalAlgorithm {
 						setRect.put(labelMatrix[y][x], new int[]{x,y,x,y,x,y,1});
 					}else {
 						int temp[] = setRect.get(labelMatrix[y][x]);
-						temp[0]=Math.min(temp[0], x);
-						temp[1]=Math.min(temp[1], y);
-						temp[2]=Math.max(temp[2], x);
-						temp[3]=Math.max(temp[3], y);
-						temp[4]+=x;
-						temp[5]+=y;
-						temp[6]++;
+						temp[0]=Math.min(temp[0], x);//startX
+						temp[1]=Math.min(temp[1], y);//startY
+						temp[2]=Math.max(temp[2], x);//endX
+						temp[3]=Math.max(temp[3], y);//endY
+						temp[4]+=x;//centX
+						temp[5]+=y;//centY
+						temp[6]++;//pixel number
 						setRect.put(labelMatrix[y][x], temp);
 					}
 				}
