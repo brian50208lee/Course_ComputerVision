@@ -37,7 +37,6 @@ public class ClassicalAlgorithm {
 		relabeling();
 		createComponent();
 		findBoundingBox();
-		//ImgUtil.show2DMatrix(labelMatrix, "relabel");
 	}
 	public BufferedImage getComponentImg(){
 		return biComponent;
@@ -47,7 +46,6 @@ public class ClassicalAlgorithm {
 	}
 	private void createComponent(){
 		biComponent = new BufferedImage(labelMatrix.length, labelMatrix[0].length, BufferedImage.TYPE_INT_ARGB);
-		
 		for (int y = 0; y < labelMatrix.length; y++) {
 			for (int x = 0; x < labelMatrix[0].length; x++) {
 				if (labelMatrix[y][x]!=0) {
@@ -126,11 +124,6 @@ public class ClassicalAlgorithm {
 
 	
 	private void checkNeighbor(int x , int y){
-		/*
-		 * check "up" and "left" neighborhood
-		 * and return min label in label[0]
-		 */
-		
 		ArrayList<Point> neighborNonZeroPoint=getNeighborNonZeroPoint(x, y);
 		if (neighborNonZeroPoint.size()==0) {
 			/*new label*/
@@ -153,11 +146,9 @@ public class ClassicalAlgorithm {
 				}
 			}
 		}
-	
-		
-		
-		
 	}
+	
+	
 	private ArrayList<Point> getNeighborNonZeroPoint(int x,int y){
 		ArrayList<Point> neighborNonZeroPoint = new ArrayList<Point>();
 		if (componentType == this.COMPONENT_4) {

@@ -4,6 +4,7 @@ import java.awt.image.BufferedImage;
 
 import cv1.util.common.FileUtil;
 import cv1.util.cv.ImgUtil;
+import cv1.util.cv.cclabeling.ClassicalAlgorithm;
 
 public class BasicImageManipulation {
 	public static final String inputFolder="input/";
@@ -26,7 +27,7 @@ public class BasicImageManipulation {
 		FileUtil.writeImg(hist, outputFolder+"histogram.png");
 		
 		//connected componedt
-		BufferedImage bound = ImgUtil.drawBoundingBox(bin_lena, 500);
+		BufferedImage bound = ImgUtil.drawBoundingBox(bin_lena, 500,ClassicalAlgorithm.COMPONENT_4);
 		FileUtil.writeImg(bound, outputFolder+"boudingBox.png");
 		
 		System.out.println("done");

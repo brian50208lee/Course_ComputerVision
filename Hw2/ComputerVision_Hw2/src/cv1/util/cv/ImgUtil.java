@@ -76,10 +76,6 @@ public class ImgUtil {
 	}
 	
 	public static BufferedImage imgBinarize(BufferedImage bi ,int threshold){
-		/*
-		 * binarizing image with threshold
-		 * input image type = ARGB
-		 */
 		BufferedImage source= toGrayImage(bi);
 		
 		BufferedImage result = new BufferedImage(source.getHeight(), source.getWidth(), source.getType());
@@ -91,22 +87,16 @@ public class ImgUtil {
 				int gray=r;
 				int newBinarizeValue = gray>=threshold?0xffffffff:0xff000000;
 				result.setRGB(x	, y	, newBinarizeValue);
-				
-				
 			}
 		}
 		return result;
-		
 	}
 	
 	public static int[] getImgHistogramMatrix(BufferedImage bi ){
 		/*
 		 * return image binarize histogram matrix
-		 * input image type = argb
 		 */
 		BufferedImage source = toGrayImage(bi);
-
-			
 		int result[] = new int[256];
 		for (int y = 0; y < source.getHeight(); y++) {
 			for (int x = 0; x < source.getWidth() ; x++) {
@@ -152,8 +142,8 @@ public class ImgUtil {
 	
 	
 	
-	public static BufferedImage drawBoundingBox(BufferedImage bi , int boxThreshold){
-		
+	public static BufferedImage drawBoundingBox(BufferedImage bi , int boxThreshold , int componetType){
+		//get binary matirx (1/0)
 		BufferedImage source = toGrayImage(bi);
 		int binaryMatix[][]= new int[bi.getHeight()][bi.getWidth()];
 		for (int y = 0; y < source.getHeight(); y++) {
@@ -163,22 +153,29 @@ public class ImgUtil {
 			}
 		}
 		
-		ClassicalAlgorithm classAlg = new ClassicalAlgorithm(binaryMatix, boxThreshold,ClassicalAlgorithm.COMPONENT_4);
+		//ClassicalAlgorithm with 
+		ClassicalAlgorithm classAlg = new ClassicalAlgorithm(binaryMatix,boxThreshold,componetType);
 		BufferedImage result = classAlg.getComponentImg();
-		
+
+		//draw bounding box and centroid
 		for (int point[] :classAlg.getBoundingBox()) {
-			drawRectangle(result, point);
+			drawRectangleAndCent(result, point);
 		}
-		
 		
 		return result;
 	}
-	public static void drawRectangle(BufferedImage bi,int point[]){
-		//System.out.println(point[0]+","+point[1]+","+point[2]+","+point[3]);
-		for (int i = point[0]; i < point[2]; i++)bi.setRGB(i, point[1], 0xff0000ff);
-		for (int i = point[0]; i < point[2]; i++)bi.setRGB(i, point[3], 0xff0000ff);
-		for (int i = point[1]; i < point[3]; i++)bi.setRGB(point[0], i , 0xff0000ff);
-		for (int i = point[1]; i < point[3]; i++)bi.setRGB(point[2], i , 0xff0000ff);
+	public static void drawRectangleAndCent(BufferedImage bi,int point[]){
+		//draw rect
+		for (int i = point[0]; i < point[2]; i++)bi.setRGB(i, point[1], 0xffff0000);
+		for (int i = point[0]; i < point[2]; i++)bi.setRGB(i, point[3], 0xffff0000);
+		for (int i = point[1]; i < point[3]; i++)bi.setRGB(point[0], i , 0xffff0000);
+		for (int i = point[1]; i < point[3]; i++)bi.setRGB(point[2], i , 0xffff0000);
+		
+		//draw cent
+		for (int i = (point[0]+point[2])/2-5; i < (point[0]+point[2])/2+6; i++) 
+			bi.setRGB(i, (point[1]+point[3])/2, 0xffff0000);
+		for (int i = (point[1]+point[3])/2-5; i < (point[1]+point[3])/2+6; i++) 
+				bi.setRGB((point[0]+point[2])/2, i, 0xffff0000);
 	}
 	
 	
