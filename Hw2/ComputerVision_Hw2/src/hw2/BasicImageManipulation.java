@@ -8,7 +8,7 @@ import cv1.util.cv.cclabeling.ClassicalAlgorithm;
 
 public class BasicImageManipulation {
 	public static final String inputFolder="input/";
-	public static final String inputFileName="lena.jpg";
+	public static final String inputFileName="lena.bmp";
 	public static final String outputFolder="output/";
 	
 	

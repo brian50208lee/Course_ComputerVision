@@ -149,7 +149,7 @@ public class ImgUtil {
 		for (int y = 0; y < source.getHeight(); y++) {
 			for (int x = 0; x < source.getWidth() ; x++) {
 				int gray=source.getRGB(x, y)&0xff;
-				binaryMatix[y][x]=gray<128 ? 1:0;
+				binaryMatix[y][x]=gray<128 ? 0:1;
 			}
 		}
 		

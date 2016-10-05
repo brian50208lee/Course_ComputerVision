@@ -49,6 +49,8 @@ public class ClassicalAlgorithm {
 		for (int y = 0; y < labelMatrix.length; y++) {
 			for (int x = 0; x < labelMatrix[0].length; x++) {
 				if (labelMatrix[y][x]!=0) {
+					biComponent.setRGB(x, y, 0xffffffff);
+				}else {
 					biComponent.setRGB(x, y, 0xff000000);
 				}
 			}
