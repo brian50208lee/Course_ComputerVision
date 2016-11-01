@@ -22,11 +22,11 @@ public class HistogramEqualization {
 		//histogram equalization
 		System.out.println("image histogram equalization ...");
 		BufferedImage equaImg = ImgUtil.histogramEqualization(lena);
-		//ImgUtil.showImg(equaImg, "equaImg");
+		ImgUtil.showImg(equaImg, "equaImg");
 		
 		//output
 		FileUtil.writeImg(equaImg, outputFolder + "equaImg.png");
-		FileUtil.writeImg(ImgUtil.getHistogramImg(ImgUtil.getImgHistogramMatrix(ImgUtil.toGrayImage(lena))), outputFolder + "hist_before.png");
+		FileUtil.writeImg(ImgUtil.getHistogramImg(ImgUtil.getImgHistogramMatrix(lena)), outputFolder + "hist_before.png");
 		FileUtil.writeImg(ImgUtil.getHistogramImg(ImgUtil.getImgHistogramMatrix(equaImg)) ,outputFolder+ "hist_after.png");
 		
 		System.out.println("done");
