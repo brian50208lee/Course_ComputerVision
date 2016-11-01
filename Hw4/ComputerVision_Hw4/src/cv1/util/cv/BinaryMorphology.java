@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class BinaryMorphology {
 	public static BufferedImage dilation(BufferedImage bi, String kernelShape){
-		ArrayList<int[]> kernelLogic = getKernelLogik(kernelShape);
+		ArrayList<int[]> kernelLogic = getKernelLogic(kernelShape);
 		BufferedImage source = ImgUtil.imgBinarize(bi, 128);
 		BufferedImage result = new BufferedImage(bi.getHeight(), bi.getWidth(), bi.getType());
 		
@@ -30,7 +30,7 @@ public class BinaryMorphology {
 	}
 	
 	public static BufferedImage erosion(BufferedImage bi, String kernelShape){
-		ArrayList<int[]> kernelLogic = getKernelLogik(kernelShape);
+		ArrayList<int[]> kernelLogic = getKernelLogic(kernelShape);
 		BufferedImage source = ImgUtil.imgBinarize(bi, 128);
 		BufferedImage result = new BufferedImage(bi.getHeight(), bi.getWidth(), bi.getType());
 		
@@ -61,8 +61,6 @@ public class BinaryMorphology {
 		return erosion(dilation(bi, kernelShape), kernelShape);
 	}
 	public static BufferedImage hitAndMiss(BufferedImage bi, String kernelShape1, String kernelShape2){
-		ArrayList<int[]> kernelLogic1 = getKernelLogik(kernelShape1);
-		ArrayList<int[]> kernelLogic2 = getKernelLogik(kernelShape2);
 		BufferedImage source = ImgUtil.imgBinarize(bi, 128);
 		BufferedImage source_c = new BufferedImage(source.getHeight(), source.getWidth(), source.getType());
 		BufferedImage result1 = new BufferedImage(bi.getHeight(), bi.getWidth(), bi.getType());
@@ -83,7 +81,8 @@ public class BinaryMorphology {
 		/* erosion */
 		result1 = erosion(source, kernelShape1);
 		result2 = erosion(source_c, kernelShape2);
-		/* inersection */
+		
+		/* intersection */
 		for (int y = 0; y < finalResult.getHeight(); y++) {
 			for (int x = 0; x < finalResult.getWidth() ; x++) {
 				int binaryValue1 = result1.getRGB(x, y)&0xff;
@@ -93,18 +92,18 @@ public class BinaryMorphology {
 				}
 			}
 		}
+		
 		return finalResult;
 	}
 	
-	private static ArrayList<int[]> getKernelLogik(String kernelShape){
+	private static ArrayList<int[]> getKernelLogic(String kernelShape){
 		ArrayList<int[]> kernelLogic = new ArrayList<int[]>();
 		
 		switch (kernelShape) {
 			case "L":
 				/* x,y */
-				kernelLogic.add(new int[]{-1,-1});
 				kernelLogic.add(new int[]{-1,+0});
-				kernelLogic.add(new int[]{-1,+1});
+				kernelLogic.add(new int[]{+0,+0});
 				kernelLogic.add(new int[]{+0,+1});
 				break;
 			case "~L":
@@ -112,7 +111,6 @@ public class BinaryMorphology {
 				kernelLogic.add(new int[]{+0,-1});
 				kernelLogic.add(new int[]{+1,-1});
 				kernelLogic.add(new int[]{+1,+0});
-				kernelLogic.add(new int[]{+1,+1});
 				break;
 			case "+":
 				/* x,y */
@@ -122,7 +120,34 @@ public class BinaryMorphology {
 				kernelLogic.add(new int[]{+1,+0});
 				kernelLogic.add(new int[]{+0,+1});
 				break;
+			case "3-5-5-5-3":
+				/* x,y */
+				kernelLogic.add(new int[]{-1,-2});
+				kernelLogic.add(new int[]{+0,-2});
+				kernelLogic.add(new int[]{+1,-2});
 
+				kernelLogic.add(new int[]{-2,-1});
+				kernelLogic.add(new int[]{-1,-1});
+				kernelLogic.add(new int[]{+0,-1});
+				kernelLogic.add(new int[]{+1,-1});
+				kernelLogic.add(new int[]{+2,-1});
+
+				kernelLogic.add(new int[]{-2,+0});
+				kernelLogic.add(new int[]{-1,+0});
+				kernelLogic.add(new int[]{+0,+0});
+				kernelLogic.add(new int[]{+1,+0});
+				kernelLogic.add(new int[]{+2,+0});
+
+				kernelLogic.add(new int[]{-2,+1});
+				kernelLogic.add(new int[]{-1,+1});
+				kernelLogic.add(new int[]{+0,+1});
+				kernelLogic.add(new int[]{+1,+1});
+				kernelLogic.add(new int[]{+2,+1});
+
+				kernelLogic.add(new int[]{-1,+2});
+				kernelLogic.add(new int[]{+0,+2});
+				kernelLogic.add(new int[]{+1,+2});
+				break;
 			default:break;
 		}
 		return kernelLogic;

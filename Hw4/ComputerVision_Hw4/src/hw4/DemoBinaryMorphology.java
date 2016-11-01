@@ -22,22 +22,22 @@ public class DemoBinaryMorphology {
 
 		// dilation
 		System.out.println("image dilation ...");
-		BufferedImage dilImg = BinaryMorphology.dilation(lena, "+");
+		BufferedImage dilImg = BinaryMorphology.dilation(lena, "3-5-5-5-3");
 		//ImgUtil.showImg(dilImg, "dilImg");
 
 		// erosion
 		System.out.println("image erosion ...");
-		BufferedImage eroImg = BinaryMorphology.erosion(lena, "+");
+		BufferedImage eroImg = BinaryMorphology.erosion(lena, "3-5-5-5-3");
 		//ImgUtil.showImg(eroImg, "eroImg");
 		
 		// opening
 		System.out.println("image opening ...");
-		BufferedImage openImg = BinaryMorphology.opening(lena, "+");
+		BufferedImage openImg = BinaryMorphology.opening(lena, "3-5-5-5-3");
 		//ImgUtil.showImg(openImg, "openImg");
 		
 		// closing
 		System.out.println("image closing ...");
-		BufferedImage closImg = BinaryMorphology.closing(lena, "+");
+		BufferedImage closImg = BinaryMorphology.closing(lena, "3-5-5-5-3");
 		//ImgUtil.showImg(closImg, "closImg");
 		
 		// Hig and Miss
