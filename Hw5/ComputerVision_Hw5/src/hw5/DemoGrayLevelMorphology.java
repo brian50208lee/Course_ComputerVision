@@ -25,22 +25,22 @@ public class DemoGrayLevelMorphology {
 		// dilation
 		System.out.println("image dilation ...");
 		BufferedImage dilImg = GrayLevelMorphology.dilation(lena, "3-5-5-5-3", 0);
-		ImgUtil.showImg(dilImg, "dilation");
+		//ImgUtil.showImg(dilImg, "dilation");
 
 		// erosion
 		System.out.println("image erosion ...");
 		BufferedImage eroImg = GrayLevelMorphology.erosion(lena, "3-5-5-5-3", 0);
-		ImgUtil.showImg(eroImg, "erosion");
+		//ImgUtil.showImg(eroImg, "erosion");
 		
 		// opening
 		System.out.println("image opening ...");
 		BufferedImage openImg = GrayLevelMorphology.opening(lena, "3-5-5-5-3", 0);
-		ImgUtil.showImg(openImg, "opening");
+		//ImgUtil.showImg(openImg, "opening");
 		
 		// closing
 		System.out.println("image closing ...");
 		BufferedImage closImg = GrayLevelMorphology.closing(lena, "3-5-5-5-3", 0);
-		ImgUtil.showImg(closImg, "closing");
+		//ImgUtil.showImg(closImg, "closing");
 		
 		
 		//output
