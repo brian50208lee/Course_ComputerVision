@@ -1,15 +1,11 @@
 package hw7;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import cv1.util.common.FileUtil;
 import cv1.util.cv.ImgUtil;
 import cv1.util.cv.Thinning;
-import cv1.util.cv.YokoiConnectivityNumber;
-import jdk.jfr.events.FileWriteEvent;
 
 public class DemoThinning {
 
@@ -22,13 +18,12 @@ public class DemoThinning {
 		BufferedImage lena = FileUtil.readImg(inputFolder+inputFileName);
 		lena = ImgUtil.toGrayImage(lena);
 		lena = ImgUtil.imgBinarize(lena, 128);
-		//ImgUtil.showImg(lena, "init");
 
 		// down sample
 		System.out.println("downsample ...");
 		BufferedImage dwspLena = ImgUtil.downsample(lena, 8, 8);
 		
-		/* yokoi */
+		/* thin */
 		Thinning thin = new Thinning(dwspLena);
 		
 		System.out.println("done");
