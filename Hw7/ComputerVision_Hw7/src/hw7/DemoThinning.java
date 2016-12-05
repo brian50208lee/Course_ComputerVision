@@ -21,10 +21,17 @@ public class DemoThinning {
 
 		// down sample
 		System.out.println("downsample ...");
-		BufferedImage dwspLena = ImgUtil.downsample(lena, 8, 8);
+		//lena = ImgUtil.downsample(lena, 8, 8);
 		
-		/* thin */
-		Thinning thin = new Thinning(dwspLena);
+		// thinning
+		Thinning thin = new Thinning(lena);
+		
+		// show
+		BufferedImage result = thin.getResult();
+		ImgUtil.showImg(result, "thining");
+		
+		// output 
+		FileUtil.writeImg(result, outputFolder + "thining.png");
 		
 		System.out.println("done");
 	}

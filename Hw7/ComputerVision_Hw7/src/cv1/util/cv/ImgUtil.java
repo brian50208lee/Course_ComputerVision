@@ -201,12 +201,24 @@ public class ImgUtil {
 		BufferedImage bi = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_ARGB);
 		for (int y = 0; y < matrix.length; y++) {
 			for (int x = 0; x < matrix[0].length; x++) {
-				if (matrix[y][x]!=0) {
+				if (matrix[y][x]==0) {
 					bi.setRGB(x, y, 0xff000000);
 				}
 			}
 		}
 		showImg(bi, title);
+	}
+	
+	public static BufferedImage matrixToImage(int matrix[][]){
+		BufferedImage bi = new BufferedImage(matrix.length, matrix[0].length, BufferedImage.TYPE_INT_ARGB);
+		for (int y = 0; y < matrix.length; y++) {
+			for (int x = 0; x < matrix[0].length; x++) {
+				if (matrix[y][x]==0) {
+					bi.setRGB(x, y, 0xff000000);
+				}
+			}
+		}
+		return bi;
 	}
 	
 	/** image downsampling, take the topmost-left pixel */
