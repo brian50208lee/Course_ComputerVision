@@ -3,46 +3,63 @@ package cv1.util.cv;
 import java.awt.image.BufferedImage;
 
 public class Thinning {
+	/** Define sybol */
 	enum Symbol {
 		p, q, r, s
 	}
 
-	/** logic[y][x] */
+	/** logic[4][y][x] */
 	private static final int lgc_yo[][][] = {
 			{ { +0, +0 }, { +0, +1 }, { -1, +1 }, { -1, +0 } },
 			{ { +0, +0 }, { -1, +0 }, { -1, -1 }, { +0, -1 } },
 			{ { +0, +0 }, { +0, -1 }, { +1, -1 }, { +1, +0 } },
 			{ { +0, +0 }, { +1, +0 }, { +1, +1 }, { +0, +1 } } };
 
+	/** logic[y][x] */
 	private static final int lgc_pr[][] = { { +0, +1 }, { -1, +0 }, { +0, -1 }, { +1, +0 } };
 
+	/** logic[y][x] */
 	private static final int lgc_sh[][][] = {
 			{ { +0, +0 }, { +0, +1 }, { -1, +1 }, { -1, +0 } },
 			{ { +0, +0 }, { -1, +0 }, { -1, -1 }, { +0, -1 } },
 			{ { +0, +0 }, { +0, -1 }, { +1, -1 }, { +1, +0 } },
 			{ { +0, +0 }, { +1, +0 }, { +1, +1 }, { +0, +1 } } };
 
+	/** Input binerized image */
 	private BufferedImage image;
+	
+	/** Input binarized image matrix */
 	private int[][] binImage;
+	
+	/** Result image */
 	private BufferedImage result;
 
-	
+	/** Return result thinning image */
 	public BufferedImage getResult(){return this.result;}
 	
 	/**
+	 * Image processing - Thinning 
 	 * @param image binarized image
 	 */
 	public Thinning(BufferedImage image) {
 		this.image = image;
 		this.binImage = ImgUtil.imgBinarizeMatrix(image, 128);
+		
 		/*
-		 * this.binImage = new int[][]{ {1,1,1,1,1,1,0}, {1,1,1,1,1,1,0},
-		 * {1,1,1,1,1,1,1}, {1,0,0,1,1,1,1}, {1,0,0,0,1,1,1}, {1,0,0,0,0,0,1}};
-		 */
+		this.binImage = new int[][]{ 
+			 {1,1,1,1,1,1,0}, 
+			 {1,1,1,1,1,1,0},
+			 {1,1,1,1,1,1,1}, 
+			 {1,0,0,1,1,1,1}, 
+			 {1,0,0,0,1,1,1}, 
+			 {1,0,0,0,0,0,1}};
+		*/
+		 
 
 		processImg();
 	}
 
+	/** Main thinning algorithm */
 	private void processImg() {
 		int change;
 		do {
@@ -138,11 +155,13 @@ public class Thinning {
 		result = ImgUtil.matrixToImage(binImage);
 	}
 
+	/** H function in shrink operation */
 	private int shrinkH(int b, int c, int d, int e) {
 		if (b == c && (b != d || b != e))return 1;
 		else return 0;
 	}
 
+	/** F function in shrink operation */
 	private int shrinkF(int a1, int a2, int a3, int a4, int x) {
 		int c = 0;
 		if (a1 == 1)c++;
@@ -153,12 +172,14 @@ public class Thinning {
 		else return x;
 	}
 
+	/** H function in yokoi operation */
 	private Symbol yokoiH(int b, int c, int d, int e) {
 		if (b == c && (b != d || b != e))return Symbol.q;
 		else if (b == c && b == d && b == e)return Symbol.r;
 		else return Symbol.s;
 	}
 
+	/** F function in yokoi operation */
 	private int yokoiF(Symbol a1, Symbol a2, Symbol a3, Symbol a4) {
 		if (a1 == Symbol.r && a2 == Symbol.r && a3 == Symbol.r && a4 == Symbol.r)return 5;
 		int nQ = 0;
