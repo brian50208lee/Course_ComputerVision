@@ -118,18 +118,12 @@ public class NoiseRemover {
 						/* old rgb */
 						int rgb = bi.getRGB(x + logic.x, y + logic.y);
 						int gray = rgb&0xff;
-						
 						/* filter */
 						neighborhoodGray.add(gray);
-					}catch (Exception e) {
-						// TODO: handle exception
-					}
+					}catch (Exception e) {/* Ignore */}
 				}
 				neighborhoodGray.sort(new Comparator<Integer>() {
-					@Override
-					public int compare(Integer o1, Integer o2) {
-						return o1.compareTo(o2);
-					}
+					@Override public int compare(Integer o1, Integer o2) {return o1.compareTo(o2);}
 				});
 				int medianIdx = neighborhoodGray.size()/2;
 				int medianGray = neighborhoodGray.get(medianIdx);
