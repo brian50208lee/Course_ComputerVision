@@ -1,6 +1,7 @@
 package cv1.util.cv.noise;
 
 import java.awt.image.BufferedImage;
+import java.nio.Buffer;
 import java.util.Random;
 
 public class NoiseGenerator {
@@ -46,12 +47,62 @@ public class NoiseGenerator {
 				
 				/* new RGB */
 				int newGray = gray;
-				newGray = noise > 1 - threshold ? 255 : newGray;
-				newGray = noise < threshold ? 0 : newGray;
+				newGray = noise > 1 - threshold/2 ? 255 : newGray;
+				newGray = noise < threshold/2 ? 0 : newGray;
 				int newRGB = 0xff000000 + (newGray<<16)+ (newGray<<8)+ (newGray);
 				result.setRGB(x	, y	, newRGB);
 			}
 		}
 		return result;
+	}
+	
+	public static double signalToNoiseRatio(BufferedImage srcImg, BufferedImage noiseImg){
+		int N = srcImg.getWidth() * srcImg.getHeight();
+		double SNR = 0.0;
+		double US = 0.0;
+		double VS = 0.0;
+		double UN = 0.0;
+		double VN = 0.0;
+		
+		/* US */
+		for (int y = 0; y < srcImg.getHeight(); y++) {
+			for (int x = 0; x < srcImg.getWidth() ; x++) {
+				int gray = srcImg.getRGB(x, y) & 0xff;
+				US += gray;
+			}
+		}
+		US /= N;
+		
+		/* VS */
+		for (int y = 0; y < srcImg.getHeight(); y++) {
+			for (int x = 0; x < srcImg.getWidth() ; x++) {
+				int gray = srcImg.getRGB(x, y) & 0xff;
+				VS += (gray-US)*(gray-US);
+			}
+		}
+		VS /= N;
+		
+		/* UN */
+		for (int y = 0; y < noiseImg.getHeight(); y++) {
+			for (int x = 0; x < noiseImg.getWidth() ; x++) {
+				int grayNis = noiseImg.getRGB(x, y) & 0xff;
+				int graySrc = srcImg.getRGB(x, y) & 0xff;
+				UN += (grayNis-graySrc);
+			}
+		}
+		UN /= N;
+		
+		/* VN */
+		for (int y = 0; y < noiseImg.getHeight(); y++) {
+			for (int x = 0; x < noiseImg.getWidth() ; x++) {
+				int grayNis = noiseImg.getRGB(x, y) & 0xff;
+				int graySrc = srcImg.getRGB(x, y) & 0xff;
+				VN += (grayNis-graySrc-UN) * (grayNis-graySrc-UN);
+			}
+		}
+		VN /= N;
+	
+		SNR = 20 * Math.log(Math.sqrt(VS / VN)) / Math.log(10);
+		return SNR;
 	}
 }
