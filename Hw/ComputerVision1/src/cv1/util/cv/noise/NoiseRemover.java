@@ -1,12 +1,8 @@
 package cv1.util.cv.noise;
-import java.awt.List;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Comparator;
 
-import com.sun.javafx.scene.traversal.WeightedClosestCorner;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 public class NoiseRemover {
 
