@@ -2,7 +2,6 @@ package hw3;
 
 import java.awt.image.BufferedImage;
 
-import com.sun.imageio.plugins.common.ImageUtil;
 
 import cv1.util.common.FileUtil;
 import cv1.util.cv.ImgUtil;
@@ -17,6 +16,7 @@ public class HistogramEqualization {
 		//read image
 		System.out.println("reading img ...");
 		BufferedImage lena = FileUtil.readImg(inputFolder+inputFileName);
+		lena = ImgUtil.toGrayImage(lena);
 		ImgUtil.showImg(lena, "init");
 		
 		//histogram equalization

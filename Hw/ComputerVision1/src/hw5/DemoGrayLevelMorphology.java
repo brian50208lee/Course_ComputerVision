@@ -2,11 +2,9 @@ package hw5;
 
 import java.awt.image.BufferedImage;
 
-import com.sun.imageio.plugins.common.ImageUtil;
 
 import cv1.util.common.FileUtil;
 import cv1.util.cv.ImgUtil;
-import cv1.util.cv.BinaryMorphology;
 import cv1.util.cv.GrayLevelMorphology;
 
 public class DemoGrayLevelMorphology {

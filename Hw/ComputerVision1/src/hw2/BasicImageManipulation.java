@@ -16,6 +16,7 @@ public class BasicImageManipulation {
 		//read image
 		System.out.println("read img ...");
 		BufferedImage lena = FileUtil.readImg(inputFolder+inputFileName);
+		lena = ImgUtil.toGrayImage(lena);
 		
 		//image binarize with threashold 128
 		System.out.println("binarizing ...");
