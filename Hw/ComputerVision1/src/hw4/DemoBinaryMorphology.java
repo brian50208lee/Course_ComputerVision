@@ -2,7 +2,6 @@ package hw4;
 
 import java.awt.image.BufferedImage;
 
-import com.sun.imageio.plugins.common.ImageUtil;
 
 import cv1.util.common.FileUtil;
 import cv1.util.cv.ImgUtil;

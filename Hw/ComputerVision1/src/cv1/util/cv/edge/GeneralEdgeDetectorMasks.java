@@ -1,7 +1,6 @@
 package cv1.util.cv.edge;
 
 import java.util.ArrayList;
-
 import cv1.util.cv.mask.Mask;
 
 public class GeneralEdgeDetectorMasks {
@@ -23,6 +22,7 @@ public class GeneralEdgeDetectorMasks {
 	
 	private static ArrayList<Mask> getNevatiaMaskList() {
 		ArrayList<Mask> maskList = new ArrayList<Mask>();
+		// 0 degree
 		maskList.add(new Mask(new double[][]{
 			{100,100,100,100,100},
 			{100,100,100,100,100},
@@ -30,6 +30,7 @@ public class GeneralEdgeDetectorMasks {
 			{-100,-100,-100,-100,-100},
 			{-100,-100,-100,-100,-100}}
 		));
+		// 30 degree
 		maskList.add(new Mask(new double[][]{
 			{100,100,100,100,100},
 			{100,100,100,78,-32},
@@ -37,13 +38,15 @@ public class GeneralEdgeDetectorMasks {
 			{32,-78,-100,-100,-100},
 			{-100,-100,-100,-100,-100}}
 		));
+		// 60 degree
 		maskList.add(new Mask(new double[][]{
-			{100,100,100,32,100},
-			{100,100,92,-78,100},
+			{100,100,100,32,-100},
+			{100,100,92,-78,-100},
 			{100,100,0,-100,-100},
 			{100,78,-92,-100,-100},
 			{100,-32,-100,-100,-100}}
 		));
+		// 90 degree
 		maskList.add(new Mask(new double[][]{
 			{-100,-100,0,100,100},
 			{-100,-100,0,100,100},
@@ -51,6 +54,7 @@ public class GeneralEdgeDetectorMasks {
 			{-100,-100,0,100,100},
 			{-100,-100,0,100,100}}
 		));
+		// -60 degree
 		maskList.add(new Mask(new double[][]{
 			{-100,32,100,100,100},
 			{-100,-78,92,100,100},
@@ -58,6 +62,7 @@ public class GeneralEdgeDetectorMasks {
 			{-100,-100,-92,78,100},
 			{-100,-100,-100,-32,100}}
 		));
+		// -30 degree
 		maskList.add(new Mask(new double[][]{
 			{100,100,100,100,100},
 			{-32,78,100,100,100},
@@ -164,51 +169,62 @@ public class GeneralEdgeDetectorMasks {
 	private static ArrayList<Mask> getFreiAndChenMaskList() {
 		ArrayList<Mask> maskList = new ArrayList<Mask>();
 		double sqr2 = Math.sqrt(2);
+		// M1
 		maskList.add(new Mask(new double[][]{
 			{1,sqr2,1},
 			{0,0,0},
 			{-1,-sqr2,-1}}
 		));
+		// M2
 		maskList.add(new Mask(new double[][]{
 			{1,0,-1},
 			{sqr2,0,-sqr2},
 			{1,0,-1}}
 		));
+		/*
+		// M3
 		maskList.add(new Mask(new double[][]{
 			{0,-1,sqr2},
 			{1,0,-1},
 			{-sqr2,1,0}}
 		));
+		// M4
 		maskList.add(new Mask(new double[][]{
 			{sqr2,-1,0},
 			{-1,0,1},
 			{0,1,-sqr2}}
 		));
+		// M5
 		maskList.add(new Mask(new double[][]{
 			{0,1,0},
 			{-1,0,-1},
 			{0,1,0}}
 		));
+		// M6
 		maskList.add(new Mask(new double[][]{
 			{-1,0,1},
 			{0,0,0},
 			{1,0,-1}}
 		));
+		// M7
 		maskList.add(new Mask(new double[][]{
 			{1,-2,1},
 			{-2,4,-2},
 			{1,-2,1}}
 		));
+		// M8
 		maskList.add(new Mask(new double[][]{
 			{-2,1,-2},
 			{1,4,1},
 			{-2,1,-2}}
 		));
+		// M9
 		maskList.add(new Mask(new double[][]{
 			{1,1,1},
 			{1,1,1},
 			{1,1,1}}
 		));
+		*/
 		
 		return maskList;
 	}

@@ -105,16 +105,13 @@ public class ImgUtil {
 	 * @return image binarize histogram matrix 
 	 */
 	public static int[] getImgHistogramMatrix(BufferedImage bi ){
-		
-		BufferedImage source = toGrayImage(bi);
 		int result[] = new int[256];
-		for (int y = 0; y < source.getHeight(); y++) {
-			for (int x = 0; x < source.getWidth() ; x++) {
-				int gray=source.getRGB(x, y)&0xff;
+		for (int y = 0; y < bi.getHeight(); y++) {
+			for (int x = 0; x < bi.getWidth() ; x++) {
+				int gray= bi.getRGB(x, y)&0xff;
 				result[gray]++;
 			}
 		}
-		
 		return result;
 	}
 	

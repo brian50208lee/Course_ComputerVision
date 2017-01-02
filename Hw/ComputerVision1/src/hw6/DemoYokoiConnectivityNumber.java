@@ -8,7 +8,6 @@ import java.io.IOException;
 import cv1.util.common.FileUtil;
 import cv1.util.cv.ImgUtil;
 import cv1.util.cv.YokoiConnectivityNumber;
-import jdk.jfr.events.FileWriteEvent;
 
 public class DemoYokoiConnectivityNumber {
 

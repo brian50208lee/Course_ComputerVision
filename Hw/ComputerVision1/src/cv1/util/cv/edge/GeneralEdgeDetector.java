@@ -8,9 +8,7 @@ import cv1.util.cv.mask.Mask;
 import cv1.util.cv.mask.MaskLogic;
 
 public class GeneralEdgeDetector {
-	
-	
-	public static BufferedImage robertsOperator(BufferedImage bi, int threshold, GeneralEdgeDetectorMasks.MaskName maskName){
+	public static BufferedImage operate(BufferedImage bi, int threshold, GeneralEdgeDetectorMasks.MaskName maskName){
 		ArrayList<Mask> maskList = GeneralEdgeDetectorMasks.getMasksList(maskName);
 		if (maskName == MaskName.Kirsch || maskName == MaskName.Robinson || maskName == MaskName.Nevatia) {
 			return maxOperation(bi, threshold, maskList);
@@ -23,9 +21,9 @@ public class GeneralEdgeDetector {
 		
 		for (int y = 0; y < bi.getHeight(); y++) {
 			for (int x = 0; x < bi.getWidth() ; x++) {
-				double gradientMagnit = 0;
+				double gradientMagnit = 0.0;
 				for(Mask mask : maskList){
-					double maskWeightValue = 0;
+					double maskWeightValue = 0.0;
 					for (MaskLogic logic : mask.logics) {
 						try {
 							int gray = bi.getRGB(x + logic.x, y + logic.y) & 0xff;
@@ -41,18 +39,16 @@ public class GeneralEdgeDetector {
 				result.setRGB(x, y, 0xff000000 + (newGray<<16) + (newGray<<8) + (newGray));
 			}
 		}
-		
 		return result;
 	}
 	
 	private static BufferedImage maxOperation(BufferedImage bi, int threshold, ArrayList<Mask> maskList){
 		BufferedImage result = new BufferedImage(bi.getWidth(), bi.getHeight(), bi.getType());
-		
 		for (int y = 0; y < bi.getHeight(); y++) {
 			for (int x = 0; x < bi.getWidth() ; x++) {
 				double gradientMagnit = -Double.MAX_VALUE;
 				for(Mask mask : maskList){
-					double maskWeightValue = 0;
+					double maskWeightValue = 0.0;
 					for (MaskLogic logic : mask.logics) {
 						try {
 							int gray = bi.getRGB(x + logic.x, y + logic.y) & 0xff;
@@ -67,7 +63,6 @@ public class GeneralEdgeDetector {
 				result.setRGB(x, y, 0xff000000 + (newGray<<16) + (newGray<<8) + (newGray));
 			}
 		}
-		
 		return result;
 	}
 		
