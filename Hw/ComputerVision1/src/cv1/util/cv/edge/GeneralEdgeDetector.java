@@ -3,14 +3,15 @@ package cv1.util.cv.edge;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import cv1.util.cv.edge.GeneralEdgeDetectorMasks.MaskName;
+import cv1.util.cv.mask.GeneralEdgeDetectorMasks;
 import cv1.util.cv.mask.Mask;
 import cv1.util.cv.mask.MaskLogic;
+import cv1.util.cv.mask.GeneralEdgeDetectorMasks.MaskName;
 
 public class GeneralEdgeDetector {
 	
 	
-	public static BufferedImage robertsOperator(BufferedImage bi, int threshold, GeneralEdgeDetectorMasks.MaskName maskName){
+	public static BufferedImage operate(BufferedImage bi, int threshold, GeneralEdgeDetectorMasks.MaskName maskName){
 		ArrayList<Mask> maskList = GeneralEdgeDetectorMasks.getMasksList(maskName);
 		if (maskName == MaskName.Kirsch || maskName == MaskName.Robinson || maskName == MaskName.Nevatia) {
 			return maxOperation(bi, threshold, maskList);

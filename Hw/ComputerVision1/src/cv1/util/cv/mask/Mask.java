@@ -11,11 +11,15 @@ public class Mask {
 		logics = new ArrayList<MaskLogic>();
 	}
 	
-	public Mask(double mask[][]){
+	public Mask(double mask[][],boolean center){
 		logics = new ArrayList<MaskLogic>();
 		for (int y = 0; y < mask.length; y++) {
 			for (int x = 0; x < mask[y].length; x++) {
-				logics.add(new MaskLogic(x, y, mask[y][x]));
+				if (center) {
+					logics.add(new MaskLogic(x - mask[y].length/2, y - mask.length/2, mask[y][x]));
+				} else {
+					logics.add(new MaskLogic(x, y, mask[y][x]));
+				}
 			}
 		}
 	}
