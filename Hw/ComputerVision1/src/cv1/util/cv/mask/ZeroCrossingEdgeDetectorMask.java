@@ -71,6 +71,6 @@ public class ZeroCrossingEdgeDetectorMask {
 	
 	
 	public static double gaussian(int r, int c, double std_dev){
-		return 1.0 / (2*Math.PI*std_dev*std_dev) * Math.pow(Math.E, (r*r + c*c) / (-2.0*std_dev*std_dev));
+		return -1.0 / (2*Math.PI*std_dev*std_dev) * Math.pow(Math.E, (r*r + c*c) / (-2.0*std_dev*std_dev));
 	}
 }

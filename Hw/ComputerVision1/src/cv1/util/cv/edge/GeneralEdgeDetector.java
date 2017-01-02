@@ -9,11 +9,6 @@ import cv1.util.cv.mask.MaskLogic;
 import cv1.util.cv.mask.GeneralEdgeDetectorMasks.MaskName;
 
 public class GeneralEdgeDetector {
-<<<<<<< HEAD
-	
-	
-=======
->>>>>>> 76716a74543181992af80919ee65f8c953cbdc42
 	public static BufferedImage operate(BufferedImage bi, int threshold, GeneralEdgeDetectorMasks.MaskName maskName){
 		ArrayList<Mask> maskList = GeneralEdgeDetectorMasks.getMasksList(maskName);
 		if (maskName == MaskName.Kirsch || maskName == MaskName.Robinson || maskName == MaskName.Nevatia) {
